@@ -38,14 +38,13 @@ def get_size(record):
 #get a dictonary day+ip : total download size from the file
 def get_dayip_size_dictionary(file_name):
     dayip_size_dictionary = {}
-    file = open(file_name, "r")
-
-    for line in file:
-        record = split_file_row(line)
-        size = get_size(record)
-        dayip = "{} - {}".format(get_date(record), get_ip(record))
-        dayip_size_dictionary[dayip] = dayip_size_dictionary.get(dayip,
-                                                                 0) + size
+    with open(file_name) as file:
+        for line in file:
+            record = split_file_row(line)
+            size = get_size(record)
+            dayip = "{} - {}".format(get_date(record), get_ip(record))
+            dayip_size_dictionary[dayip] = dayip_size_dictionary.get(dayip,
+                                                                     0) + size
 
     return dayip_size_dictionary
 
@@ -69,12 +68,11 @@ def get_max_downloader_per_day(dayip_size_dictionary):
 #get a dictonary hour : number of requests from the file
 def get_hour_reqnum_dictionary(file_name):
     hour_reqnum_dictionary = {}
-    file = open(file_name, "r")
-
-    for line in file:
-        record = split_file_row(line)
-        hour = get_hour(record)
-        hour_reqnum_dictionary[hour] = hour_reqnum_dictionary.get(hour, 0) + 1
+    with open(file_name) as file:
+        for line in file:
+            record = split_file_row(line)
+            hour = get_hour(record)
+            hour_reqnum_dictionary[hour] = hour_reqnum_dictionary.get(hour, 0) + 1
 
     return hour_reqnum_dictionary
 
