@@ -20,22 +20,20 @@ def split_file_row(line):
     return line.replace('[', '').replace(']', '').split(" ")
 
 #get date/day from stripped line
-def get_date(line):
-    rec = split_file_row(line)
-    return (rec[1].split(":"))[0]
+def get_date(record):
+    return (record[1].split(":"))[0]
 
 #get hour from stripped line
-def get_hour(line):
-    rec = split_file_row(line)
-    return (rec[1].split(":"))[1]
+def get_hour(record):
+    return (record[1].split(":"))[1]
 
 #get ip from stripped line
-def get_ip(line):
-    return split_file_row(line)[0]
+def get_ip(record):
+    return record[0]
 
 #get download size from stripped line
-def get_size(line):
-    return int(split_file_row(line)[2])
+def get_size(record):
+    return int(record[2])
 
 #get a dictonary day+ip : total download size from the file
 def get_dayip_size_dictionary(file_name):
@@ -43,8 +41,9 @@ def get_dayip_size_dictionary(file_name):
     file = open(file_name, "r")
 
     for line in file:
-        size = get_size(line)
-        dayip = "{} - {}".format(get_date(line), get_ip(line))
+        record = split_file_row(line)
+        size = get_size(record)
+        dayip = "{} - {}".format(get_date(record), get_ip(record))
         dayip_size_dictionary[dayip] = dayip_size_dictionary.get(dayip,
                                                                  0) + size
 
@@ -73,7 +72,8 @@ def get_hour_reqnum_dictionary(file_name):
     file = open(file_name, "r")
 
     for line in file:
-        hour = get_hour(line)
+        record = split_file_row(line)
+        hour = get_hour(record)
         hour_reqnum_dictionary[hour] = hour_reqnum_dictionary.get(hour, 0) + 1
 
     return hour_reqnum_dictionary
