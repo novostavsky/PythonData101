@@ -9,7 +9,8 @@ import argparse
 #constants and default params
 BASE_URL = 'https://api.github.com/repos/{}/{}/contributors'
 DEFAULT_CHUNK_SIZE = 128
-
+#GITHUB_USER = 'novostavsky'
+#TOKEN_FILE = 'github.token'
 
 #get a dictionary contributor:avatar_url for a github project
 def get_user_avatar_dict(user_login, project_name):
@@ -44,20 +45,33 @@ def get_github_token(file_name):
         token = token_file.read()
     return token
 
+#get authorized session
+def get_session(user_name, token):
+    gh_session = requests.Session()
+    gh_session.auth = (user_name, token)
+
+    return gh_session
 
 ####################################################################
 #################### let's roll#####################################
 ####################################################################
+
+#get arguments from CLI
 parser = argparse.ArgumentParser(
     description='This is program that downloads avatars of contributors'
     'for a github project.')
-
 parser.add_argument('-u', "--user", action='store')
 parser.add_argument('-p', "--project", action='store')
 args = parser.parse_args()
 
+##ToDo rewrite functions to use session, and use the session below for all requests
+#gh_session = get_session(GITHUB_USER, get_github_token(TOKEN_FILE))
+#response = json.loads(gh_session.get(BASE_URL).text)
+
+#get all contributors and url to their avatars
 user_avatar_dict = get_user_avatar_dict(args.user, args.project)
 
+#download and save all avatars from the dictionary above
 for contributor in user_avatar_dict:
     save_avatar_into_folder(args.user, contributor, args.project,
                             user_avatar_dict[contributor])
