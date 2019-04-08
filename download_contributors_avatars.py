@@ -57,3 +57,4 @@ user_avatar_dict = get_user_avatar_dict(args.user, args.project)
 
 for contributor in user_avatar_dict:
     save_avatar_into_folder(args.user, contributor, args.project, user_avatar_dict[contributor])
+    
