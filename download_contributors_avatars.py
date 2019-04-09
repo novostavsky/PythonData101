@@ -2,6 +2,7 @@ import requests
 import json
 import os
 import argparse
+import sys
 
 #Note that it uses no authorization, so it can be blocked by github!
 #Please consider OAuth if you want to run this reqularly from one IP
@@ -17,7 +18,14 @@ def get_user_avatar_dict(user_login, project_name):
     user_avatar_dict = {}
     response = requests.get(BASE_URL.format(user_login, project_name))
     json_data = json.loads(response.text)
-
+    
+    #exit if you've reached max limit of unauthorized requrests
+    if 'message' in json_data:
+        if 'API rate limit exceeded' in json_data['message']:
+            print(json_data['message'])
+            print('exiting...')
+            sys.exit(1)
+    #do the job is everything is ok and you got data from github
     for record in json_data:
         user_avatar_dict[record['login']] = record['avatar_url']
 
