@@ -27,12 +27,12 @@ def get_user_avatar_dict(user_login, project_name):
 #save avatar profiles from a project (project owner and project name)
 #saving by chunks of DEFAULT_CHUNK_SIZE
 def save_avatar_into_folder(owner_name, user_name, project_name, avatar_url):
-    folder_name = "{}/{}".format(owner_name, project_name)
+    folder_name = "{}{}{}".format(owner_name, os.sep, project_name)
     os.makedirs(folder_name, exist_ok=True)
 
     response = requests.get(avatar_url, stream=True)
     file_type = response.headers['Content-Type'].split('/')[1]
-    file_name = '{}/{}.{}'.format(folder_name, user_name, file_type)
+    file_name = '{}{}{}.{}'.format(folder_name, os.sep, user_name, file_type)
 
     with open(file_name, 'wb') as file_im:
         for chunk in response.iter_content(chunk_size=DEFAULT_CHUNK_SIZE):
