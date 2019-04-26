@@ -1,0 +1,12 @@
+{
+  "data_file": "HistoricalQuotes.csv",
+  "result_file": "Stocks.png",
+  "format": "png",
+  "convert_to_date": "date",
+  "DPI": "900",
+  "plots":[
+    {"x":"date", "y":"high", "label": "high", "kind": "line", "color":"green"},
+    {"x":"date", "y":"low", "label": "low", "kind": "line", "color":"orange"}
+  ],
+  "labels": {"xlabel": "Date", "ylabel": "Price in UDS", "title": "EPAM Stock"}
+}
