@@ -52,8 +52,7 @@ def get_percentage_change(old_rate, new_rate):
 def update_insert_db(db_file, rates_dict):
     #open connection to DB
     with sqlite3.connect(db_file) as connection:
-        #ToDO - doesn't work with ? and parametrized query... need to debug
-        sql_parameterized_query = 'SELECT rate FROM rates WHERE currency_code = \'{}\''
+        sql_parameterized_query = 'SELECT rate FROM rates WHERE currency_code = ?'
         cursor = connection.cursor()
         #open log file to log actions
         with open(LOG_FILE, mode='w') as csv_file:
@@ -61,8 +60,9 @@ def update_insert_db(db_file, rates_dict):
 
             #for each currency do this
             for record in rates_dict:
-                #run query and check if the record exists in DB
-                cursor.execute(sql_parameterized_query.format(record))
+                #run query and check if the record exists in DB\
+                #please note extra comma after record in order to work!
+                cursor.execute(sql_parameterized_query, (record,))
                 db_record = cursor.fetchall()
 
                 if len(db_record) == 0:
@@ -81,14 +81,19 @@ def update_insert_db(db_file, rates_dict):
                                                            float(rates_dict[record]))])
 
 
+#prep query for bulk deletion
+def prepare_del_query(rates_dict):
+    sql_parameterized_query = 'DELETE FROM rates WHERE currency_code NOT IN '
+    sql_params = '(' + '?, ' * (len(get_currencies(rates_dict)) - 1) + '?)'
+    return sql_parameterized_query + sql_params
+
+
 #delete obsolete records, no logging as they do not exist anymore
 def delete_db(db_file, rates_dict):
     with sqlite3.connect(db_file) as connection:
-        sql_parameterized_query = 'DELETE FROM rates WHERE currency_code NOT IN ({})'
+        # sql_parameterized_query = 'DELETE FROM rates WHERE currency_code NOT IN ({})'
         cursor = connection.cursor()
-        #format as a hack to remove number of records,
-        # parametrized query has to get a number of items in IN clause
-        cursor.execute(sql_parameterized_query.format(get_currencies(rates_dict)))
+        cursor.execute(prepare_del_query(rates_dict), get_currencies(rates_dict))
 
 
 ####################################################################
