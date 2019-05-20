@@ -1,0 +1,16 @@
+There is an API server that returns the OLX apartment sale post info for the given day.
+For example, here are the posts for the 19th of March 2017: https://35.204.204.210/2017-03-19/
+Substitute the date in URL to get results for the other days.
+
+You need to fetch the data for whole 2017 year from the API, day-by-day and store it into SQL database. Use a new local sqlite DB if you have no other options. If you have a dev database (e.g. Postgres or MS SQL Server) that you may utilize, use it instead.
+
+Once you have all the data in the DB, run an SQL query to fetch statistics that is relevant to your personal assignment and create a graph/chart image.
+
+Viktoriia Lutsko: Draw a pie chart showing the total number of OLX posts by location.
+Mykhaylo Sabov: Draw a timechart (line chart by time) of the median price for the apartments having 2 rooms by location
+Vira Bakhovska: Draw a timechart (line chart by time) showing median apartment price per square meter by number of rooms
+Vira Vitanska: Draw a bar chart showing median apartment price by location
+Petro Ruzak: Draw a bar chart showing the total number of OLX posts by each month
+Nataliya Pavych: Draw a timechart (line chart by time) showing the monthly number of OLX posts by number of rooms
+Anna Orlovska: Draw a timechart (line chart by time) showing median price per apartment square meter of apartments having kitchen larger than 12 square meters by location
+Volodymyr Novostavskyy: Draw a timechart (line chart by time) showing 5th percentile and 95th percentile of the price per apartment square meter by location
